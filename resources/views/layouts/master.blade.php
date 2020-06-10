@@ -161,7 +161,7 @@
                with font-awesome or any other icon font library -->
           <li class="nav-item">
             <router-link to="/dashboard" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-tachometer-alt text-orange"></i>
               <p>
                 Dashboard
               </p>
@@ -170,7 +170,7 @@
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-sitemap"></i>
+              <i class="nav-icon fas fa-sitemap text-orange"></i>
               <p>
                 Organizations
                 <i class="fas fa-angle-left right"></i>
@@ -189,42 +189,7 @@
                   <p>Profile</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/examples/e-commerce.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>E-commerce</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/projects.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Projects</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project-add.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Add</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project-edit.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Edit</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project-detail.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Detail</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/contacts.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Contacts</p>
-                </a>
-              </li>
+
             </ul>
           </li>
 
@@ -232,7 +197,7 @@
          
           <li class="nav-item">
             <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-users text-orange"></i>
               <p>
                 Members
               </p>
@@ -240,7 +205,7 @@
           </li>
             <li class="nav-item">
             <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon fas fa-calendar-day"></i>
+              <i class="nav-icon fas fa-calendar-day text-orange"></i>
               <p>
                 Events
               </p>
@@ -248,7 +213,7 @@
           </li>
           <li class="nav-item">
             <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon fas fa-user-cog"></i>
+              <i class="nav-icon fas fa-user-cog text-orange"></i>
               <p>
                 Developers
               </p>
@@ -256,19 +221,28 @@
           </li>            
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
-              <i class="nav-icon fas fa-id-card"></i>
+              <i class="nav-icon fas fa-id-card text-orange"></i>
               <p>
                 Profile
               </p>
             </router-link>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon fas fa-power-off"></i>
-              <p>
-                Logout
-              </p>
+          
+
+            <a class="nav-link" href="{{ route('logout') }}"
+            onclick="event.preventDefault();
+                          document.getElementById('logout-form').submit();">
+                           <i class="nav-icon fas fa-power-off text-orange"></i>
+                    <p>
+
+             {{ __('Logout') }}
+                    </p>
             </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>            
           </li>        
       
 
@@ -313,11 +287,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+
 
   <!-- Main Footer -->
   <footer class="main-footer">
