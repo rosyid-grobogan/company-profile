@@ -52845,6 +52845,11 @@ var routes = [{
     return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue"));
   }
 }, {
+  path: '/users',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/Users.vue */ "./resources/js/components/Users.vue"));
+  }
+}, {
   path: '/profile',
   component: function component() {
     return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/Profile.vue */ "./resources/js/components/Profile.vue"));

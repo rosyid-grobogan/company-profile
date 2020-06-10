@@ -15,6 +15,7 @@ Vue.use(VueRouter)
 
 let routes = [
     { path: '/dashboard', component: () => import('./components/Dashboard.vue') },
+    { path: '/users', component: () => import('./components/Users.vue') },
     { path: '/profile', component: () => import('./components/Profile.vue') }
   ]
 
