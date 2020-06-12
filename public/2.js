@@ -317,7 +317,7 @@ var render = function() {
                             "is-invalid": _vm.form.errors.has("password")
                           },
                           attrs: {
-                            type: "text",
+                            type: "password",
                             name: "password",
                             placeholder: "Enter your password"
                           },

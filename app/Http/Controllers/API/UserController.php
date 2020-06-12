@@ -30,12 +30,25 @@ class UserController extends Controller
     {
         //Testing
         // return ['message' => 'Success'];
+
+        // validation
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|min:5'
+        ]);
+
+        if(!empty($request['photo']))
+            $photo = $request['photo'];
+        else
+            $photo = 'user.svg';
+
         return User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'type' => $request['type'],
             'bio' => $request['bio'],
-            'photo' => $request['photo'],
+            'photo' => $photo,
             'password' => Hash::make($request['password'])
         ]);
 
