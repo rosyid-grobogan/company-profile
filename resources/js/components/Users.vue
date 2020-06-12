@@ -9,7 +9,7 @@
                 <h3 class="card-title">Users Table</h3>
                 <div class="card-tools ">
                     <div class="input-group input-group-sm">
-                  <button class="btn btn-success " data-toggle="modal" data-target="#userForm">Add New <i class="fas fa-user-plus"></i></button>
+                  <button class="btn btn-success" @click="newModel">Add New <i class="fas fa-user-plus"></i></button>
                     </div>
                 </div>
 
@@ -39,7 +39,7 @@
                       <td>{{ user.created_at| myDate }}</td>
 
                       <td>
-                          <a href="#">
+                          <a href="#" @click="editModel(user)">
                               <i class="fa fa-edit text-blue"></i>
                           </a>
                             /
@@ -59,21 +59,22 @@
           </div>
 
           <!-- Modal -->
-<div class="modal fade" id="userForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addModalLabel">Add New User</h5>
+        <h5 v-show="!editmode" class="modal-title" id="addModalLabel">Add New User</h5>
+        <h5 v-show="editmode" class="modal-title" id="addModalLabel">Update User's Info</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       
-      <form @submit.prevent="createUser">
+      <form @submit.prevent="editmode ? updateUser() : createUser() ">
       <div class="modal-body">
 
         <div class="form-group">
-          <label>Username</label>
+          <label>Name</label>
           <input v-model="form.name" type="text" name="name"
             placeholder="Enter your name"
             class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
@@ -122,7 +123,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button v-show="editmode" type="submit" class="btn btn-success">Update</button>
+        <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
       </div>
       </form>
 
@@ -143,31 +145,35 @@
                 // register
                 form: new Form({
                     // parameter unit
+                    id: '',
                     name : '',
                     email : '',
+                    password: '',
                     type : '',
                     bio : '',
                     photo : ''
                 }),
-                users : {}
+                users : {},
+                editmode: false
             }
         },
         methods: {
           createUser() {
-           this.$Progress.start()               
+            this.$Progress.start()               
             this.form.post('api/users')
             .then( () =>{
-            this.$Progress.start()  
-            Fire.$emit('AfterCreate')
-            $('#userForm').modal('hide')
-            Toast.fire({
-              icon: 'success',
-              title: 'User Created in successfully'
-            })            
-            this.$Progress.finish()
+                
+                Fire.$emit('AfterCreate')
+                $('#addNew').modal('hide')
+                Toast.fire({
+                  icon: 'success',
+                  title: 'User Created in successfully'
+                })            
+                this.$Progress.finish()
             })
             .catch( ()=>{
               // Calling error
+              this.$Progress.fail()  
             })
 
           },
@@ -187,26 +193,58 @@
 
               // send requet to the server
               if (result.value) {              
-              this.form.delete('api/users/'+id)
-              .then( ()=> {
-                  Fire.$emit('AfterCreate')
-                  Swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                  )               
-              })
-              .catch( ()=>{
-                   Swal.fire(
-                    'Failed!',
-                    'There was something wrong.',
-                    'warning'
-                  )               
-              })
+                  this.form.delete('api/users/'+id)
+                  .then( ()=> {
+                      Fire.$emit('AfterCreate')
+                      Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                      )               
+                  })
+                  .catch( ()=>{
+                      Swal.fire(
+                        'Failed!',
+                        'There was something wrong.',
+                        'warning'
+                      )               
+                  })
 
               }
             })
-          }
+          },
+          newModel() {
+            this.editmode = false
+            this.form.reset()
+            $('#addNew').modal('show')
+          },
+          editModel(user) {
+            this.editmode = true
+            this.form.reset()
+            // this.form.clear ()
+            $('#addNew').modal('show')
+            this.form.fill(user)
+          },
+          updateUser() {
+            //console.log('Editing data')
+            this.$Progress.start()  
+            this.form.put('api/users/'+this.form.id)
+            .then( ()=> {
+                // success
+                $('#addNew').modal('hide')               
+                Swal.fire(
+                'Updated!',
+                'Your Information has been updated.',
+                'success'
+                )  
+                Fire.$emit('AfterCreate')              
+                this.$Progress.finish()
+            })
+            .catch( ()=>{
+                this.$Progress.fail()  
+            })
+          }   
+
         },
         mounted() {
             console.log('Component mounted.')
