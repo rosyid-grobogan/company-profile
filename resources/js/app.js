@@ -13,6 +13,8 @@ window.Form = Form; // register
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+// Add momentjs
+import moment from 'moment'
 
 // Add
 //import Vue from 'vue'
@@ -37,6 +39,10 @@ let routes = [
     return text.charAt(0).toUpperCase() + text.slice(1)
   })
 
+  // 
+  Vue.filter('myDate', function(created) {
+    return moment(created).format('MMMM Do YYYY, h:mm:ss a')
+  })
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
