@@ -43,7 +43,7 @@
                               <i class="fa fa-edit text-blue"></i>
                           </a>
                             /
-                          <a href="#">
+                          <a href="#" @click="deleteUser(user.id)">
                               <i class="fa fa-trash text-red"></i>
                           </a>
                       </td>                      
@@ -63,7 +63,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+        <h5 class="modal-title" id="addModalLabel">Add New User</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -154,17 +154,74 @@
         },
         methods: {
           createUser() {
+           this.$Progress.start()               
             this.form.post('api/users')
+            .then( () =>{
+            this.$Progress.start()  
+            Fire.$emit('AfterCreate')
+            $('#userForm').modal('hide')
+            Toast.fire({
+              icon: 'success',
+              title: 'User Created in successfully'
+            })            
+            this.$Progress.finish()
+            })
+            .catch( ()=>{
+              // Calling error
+            })
+
           },
           loadUsers(){
             axios.get('api/users').then( ({ data }) => (this.users = data.data) );
+          },
+          deleteUser(id) {
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+
+              // send requet to the server
+              if (result.value) {              
+              this.form.delete('api/users/'+id)
+              .then( ()=> {
+                  Fire.$emit('AfterCreate')
+                  Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )               
+              })
+              .catch( ()=>{
+                   Swal.fire(
+                    'Failed!',
+                    'There was something wrong.',
+                    'warning'
+                  )               
+              })
+
+              }
+            })
           }
         },
         mounted() {
             console.log('Component mounted.')
         },
-        created() {
+        created() {           
             this.loadUsers();
+            //load after 3 second when created
+            //setInterval(this.loadUsers(), 3000)
+
+            ////load after 3 second
+            //setInterval(() => this.loadUsers(), 3000)
+
+            Fire.$on('AfterCreate', () => {
+              this.loadUsers()
+            })
         }
     }
 </script>

@@ -16,6 +16,34 @@ Vue.component(AlertError.name, AlertError)
 // Add momentjs
 import moment from 'moment'
 
+// Vue Progressbar
+import VueProgressBar from 'vue-progressbar'
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '3px'
+})
+
+// Add Sweet alert
+import Swal from 'sweetalert2'
+window.Swal = Swal
+
+// add toast swal
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+// agar lebih mudah
+window.Toast = Toast
+
+
 // Add
 //import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -43,6 +71,9 @@ let routes = [
   Vue.filter('myDate', function(created) {
     return moment(created).format('MMMM Do YYYY, h:mm:ss a')
   })
+
+  window.Fire = new Vue()
+  
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

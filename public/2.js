@@ -164,14 +164,52 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     createUser: function createUser() {
-      this.form.post('api/users');
+      var _this = this;
+
+      this.$Progress.start();
+      this.form.post('api/users').then(function () {
+        _this.$Progress.start();
+
+        Fire.$emit('AfterCreate');
+        $('#userForm').modal('hide');
+        Toast.fire({
+          icon: 'success',
+          title: 'User Created in successfully'
+        });
+
+        _this.$Progress.finish();
+      })["catch"](function () {// Calling error
+      });
     },
     loadUsers: function loadUsers() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('api/users').then(function (_ref) {
         var data = _ref.data;
-        return _this.users = data.data;
+        return _this2.users = data.data;
+      });
+    },
+    deleteUser: function deleteUser(id) {
+      var _this3 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        // send requet to the server
+        if (result.value) {
+          _this3.form["delete"]('api/users/' + id).then(function () {
+            Fire.$emit('AfterCreate');
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          })["catch"](function () {
+            Swal.fire('Failed!', 'There was something wrong.', 'warning');
+          });
+        }
       });
     }
   },
@@ -179,7 +217,16 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
   },
   created: function created() {
-    this.loadUsers();
+    var _this4 = this;
+
+    this.loadUsers(); //load after 3 second when created
+    //setInterval(this.loadUsers(), 3000)
+    ////load after 3 second
+    //setInterval(() => this.loadUsers(), 3000)
+
+    Fire.$on('AfterCreate', function () {
+      _this4.loadUsers();
+    });
   }
 });
 
@@ -226,7 +273,24 @@ var render = function() {
                       _vm._v(_vm._s(_vm._f("myDate")(user.created_at)))
                     ]),
                     _vm._v(" "),
-                    _vm._m(2, true)
+                    _c("td", [
+                      _vm._m(2, true),
+                      _vm._v(
+                        "\n                            /\n                          "
+                      ),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteUser(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-trash text-red" })]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -554,14 +618,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-edit text-blue" })
-      ]),
-      _vm._v("\n                            /\n                          "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-trash text-red" })
-      ])
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fa fa-edit text-blue" })
     ])
   },
   function() {
@@ -569,11 +627,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Add New User")]
-      ),
+      _c("h5", { staticClass: "modal-title", attrs: { id: "addModalLabel" } }, [
+        _vm._v("Add New User")
+      ]),
       _vm._v(" "),
       _c(
         "button",
