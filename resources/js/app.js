@@ -7,6 +7,12 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+// Add vform
+import { Form, HasError, AlertError } from 'vform'
+window.Form = Form; // register
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
 
 // Add
 //import Vue from 'vue'
