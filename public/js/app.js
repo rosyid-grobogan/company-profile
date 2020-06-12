@@ -53889,6 +53889,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
   routes: routes // short for `routes: routes`
 
+}); // globar filter in vue
+
+Vue.filter('upText', function (text) {
+  if (!text) return '';
+  text = text.toString();
+  return text.charAt(0).toUpperCase() + text.slice(1);
 });
 /**
  * The following block of code may be used to automatically register your
