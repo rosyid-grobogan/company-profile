@@ -52,6 +52,7 @@ Vue.use(VueRouter)
 let routes = [
     { path: '/dashboard', component: () => import('./components/Dashboard.vue') },
     { path: '/users', component: () => import('./components/Users.vue') },
+    { path: '/developers', component: () => import('./components/Developers.vue') },
     { path: '/profile', component: () => import('./components/Profile.vue') }
   ]
 
@@ -67,13 +68,13 @@ let routes = [
     return text.charAt(0).toUpperCase() + text.slice(1)
   })
 
-  // 
+  //
   Vue.filter('myDate', function(created) {
     return moment(created).format('MMMM Do YYYY, h:mm:ss a')
   })
 
   window.Fire = new Vue()
-  
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -85,7 +86,26 @@ let routes = [
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Global app, jadi bisa diakses anywhere
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
+
+// Contoh
+Vue.component(
+        'example-component',
+        require('./components/ExampleComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

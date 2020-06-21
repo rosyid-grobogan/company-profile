@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api');
+        $this->middleware('auth:api');
     }
     /**
      * Display a listing of the resource.
@@ -89,7 +89,7 @@ class UserController extends Controller
         if(!empty($request['photo']))
             $photo = $request['photo'];
         else
-            $photo = 'user.svg';  
+            $photo = 'user.svg';
 
 
         $user->update($request->all());
@@ -108,5 +108,12 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
         return ['message' => 'User Deleted'];
+    }
+
+    // Add
+    public function profile()
+    {
+        // globar helper and we dont need keyword 'use'
+        return auth('api')->user();
     }
 }

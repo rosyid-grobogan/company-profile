@@ -166,7 +166,7 @@
                 Dashboard
               </p>
             </router-link>
-          </li> 
+          </li>
 
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -182,20 +182,20 @@
                   <i class="fas fa-users nav-icon"></i>
                   <p>Users</p>
                 </router-link>
-              </li>          
+              </li>
 
             </ul>
           </li>
 
-          
-         
+
+
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <router-link to="/members" class="nav-link">
               <i class="nav-icon fas fa-users text-orange"></i>
               <p>
                 Members
               </p>
-            </a>
+            </router-link>
           </li>
             <li class="nav-item">
             <a href="pages/gallery.html" class="nav-link">
@@ -206,13 +206,13 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <router-link to="/developers" class="nav-link">
               <i class="nav-icon fas fa-user-cog text-orange"></i>
               <p>
                 Developers
               </p>
-            </a>
-          </li>            
+            </router-link>
+          </li>
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
               <i class="nav-icon fas fa-id-card text-orange"></i>
@@ -222,7 +222,7 @@
             </router-link>
           </li>
           <li class="nav-item">
-          
+
 
             <a class="nav-link" href="{{ route('logout') }}"
             onclick="event.preventDefault();
@@ -236,12 +236,12 @@
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
-            </form>            
-          </li>        
-      
+            </form>
+          </li>
 
-   
-     
+
+
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -274,7 +274,7 @@
       <div class="container-fluid">
 
         <router-view></router-view>
-      
+
         <vue-progress-bar></vue-progress-bar>
       </div><!--/. container-fluid -->
     </section>
