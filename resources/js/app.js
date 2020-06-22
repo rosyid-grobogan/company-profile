@@ -16,6 +16,12 @@ Vue.component(AlertError.name, AlertError)
 // Add momentjs
 import moment from 'moment'
 
+// Import Gate Class
+import Gate from './Gate'
+// we can use it anywhere
+Vue.prototype.$gate = new Gate(window.user)
+
+
 // Vue Progressbar
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {

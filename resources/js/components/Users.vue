@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" v-if="$gate.isAdmin()">
 
 
           <div class="col-12">
@@ -46,7 +46,7 @@
                           <a href="#" @click="deleteUser(user.id)">
                               <i class="fa fa-trash text-red"></i>
                           </a>
-                      </td>                      
+                      </td>
                     </tr>
 
 
@@ -69,7 +69,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      
+
       <form @submit.prevent="editmode ? updateUser() : createUser() ">
       <div class="modal-body">
 
@@ -131,11 +131,11 @@
     </div>
   </div>
 </div>
-        
+
 
         </div>
     </div>
-    
+
 </template>
 
 <script>
@@ -159,26 +159,31 @@
         },
         methods: {
           createUser() {
-            this.$Progress.start()               
+            this.$Progress.start()
             this.form.post('api/users')
             .then( () =>{
-                
+
                 Fire.$emit('AfterCreate')
                 $('#addNew').modal('hide')
                 Toast.fire({
                   icon: 'success',
                   title: 'User Created in successfully'
-                })            
+                })
                 this.$Progress.finish()
             })
             .catch( ()=>{
               // Calling error
-              this.$Progress.fail()  
+              this.$Progress.fail()
             })
 
           },
           loadUsers(){
-            axios.get('api/users').then( ({ data }) => (this.users = data.data) );
+              //not send if false
+              if(this.$gate.isAdmin()){
+                axios.get('api/users')
+                .then( ({ data }) => (this.users = data.data) );
+              }
+
           },
           deleteUser(id) {
             Swal.fire({
@@ -192,7 +197,7 @@
             }).then((result) => {
 
               // send requet to the server
-              if (result.value) {              
+              if (result.value) {
                   this.form.delete('api/users/'+id)
                   .then( ()=> {
                       Fire.$emit('AfterCreate')
@@ -200,14 +205,14 @@
                         'Deleted!',
                         'Your file has been deleted.',
                         'success'
-                      )               
+                      )
                   })
                   .catch( ()=>{
                       Swal.fire(
                         'Failed!',
                         'There was something wrong.',
                         'warning'
-                      )               
+                      )
                   })
 
               }
@@ -227,29 +232,29 @@
           },
           updateUser() {
             //console.log('Editing data')
-            this.$Progress.start()  
+            this.$Progress.start()
             this.form.put('api/users/'+this.form.id)
             .then( ()=> {
                 // success
-                $('#addNew').modal('hide')               
+                $('#addNew').modal('hide')
                 Swal.fire(
                 'Updated!',
                 'Your Information has been updated.',
                 'success'
-                )  
-                Fire.$emit('AfterCreate')              
+                )
+                Fire.$emit('AfterCreate')
                 this.$Progress.finish()
             })
             .catch( ()=>{
-                this.$Progress.fail()  
+                this.$Progress.fail()
             })
-          }   
+          }
 
         },
         mounted() {
             console.log('Component mounted.')
         },
-        created() {           
+        created() {
             this.loadUsers();
             //load after 3 second when created
             //setInterval(this.loadUsers(), 3000)

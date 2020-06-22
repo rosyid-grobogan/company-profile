@@ -296,7 +296,11 @@
   </footer>
 </div>
 <!-- ./wrapper -->
-
+@auth
+<script>
+    window.user = @json(auth()->user())
+</script>
+@endauth
 <!-- REQUIRED SCRIPTS -->
 <script src="/js/app.js"></script>
 </body>
