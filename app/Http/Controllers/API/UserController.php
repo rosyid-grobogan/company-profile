@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
-
+//use Intervention\Image\ImageManagerStatic as Image;
 
 class UserController extends Controller
 {
@@ -115,5 +115,21 @@ class UserController extends Controller
     {
         // globar helper and we dont need keyword 'use'
         return auth('api')->user();
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+        //return ['message' => 'Success'];
+        //return $request->photo;
+
+        // if photo is exist
+        if($request->photo){
+            $name = time().'.'.explode('/', explode(':', substr( $request->photo, 0, strpos($request->photo,  ';') ))[1])[1];
+
+            \Image::make($request->photo)->save(public_path('img/profile').$name);
+        }
+
+        // data:image/png;base64,iVBORw0KGgo ..
     }
 }

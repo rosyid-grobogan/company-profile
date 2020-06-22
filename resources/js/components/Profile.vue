@@ -296,11 +296,9 @@
                     <div class="form-group row">
                         <label for="photo" class="col-sm-12 col-form-label">Profile Photo</label>
                         <div class="col-sm-12 custom-file">
-                            <input type="file" class="form-control custom-file-input" id="photo">
+                            <input type="file" @change="updateProfile" class="form-control custom-file-input" id="photo">
                             <label class="custom-file-label" for="photo">Choose file</label>
                         </div>
-
-
                     </div>
                       <div class="form-group row">
                         <label for="password" class="col-sm-12 col-form-label">Password (leave empty if not changing)</label>
@@ -310,7 +308,7 @@
                       </div>
                       <div class="form-group row">
                         <div class="col-sm-12">
-                          <button type="submit" class="btn btn-danger">Update</button>
+                          <button type="submit" @click.prevent="updateInfo" class="btn btn-danger">Update</button>
                         </div>
                       </div>
                     </form>
@@ -346,6 +344,30 @@
         },
         mounted() {
             console.log('Component mounted.')
+        },
+
+        methods: {
+            updateProfile(e) {
+                //console.log('uploading')
+                let file = e.target.files[0];
+
+                //console.log(file)
+                // File { name: "man-muslim.svg", lastModified: 1591362486000, webkitRelativePath: "", size: 4394, type: "image/svg+xml" }
+
+                var reader = new FileReader();
+                reader.onloadend = (file) => {
+                    // output base64
+                    //console.log('RESULT', reader.result)
+
+                    this.form.photo = reader.result
+                }
+                reader.readAsDataURL(file)
+            },
+            updateInfo() {
+                this.form.put('api/profile/')
+                .then( ()=> {} )
+                .catch( ()=> {})
+            }
         },
 
         created() {
