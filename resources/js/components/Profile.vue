@@ -12,7 +12,7 @@
                 <h5 class="widget-user-desc text-right">Web Designer</h5>
               </div>
               <div class="widget-user-image">
-                <img class="img-circle" src="/img/man.svg" alt="User Avatar">
+                <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
               </div>
               <div class="card-footer">
                 <div class="row">
@@ -349,6 +349,10 @@
         },
 
         methods: {
+            loadData() {
+                axios.get('api/profile')
+                .then( ({ data }) => (this.form.fill( data )) )
+            },
             updateProfile(e) {
                 //console.log('uploading')
                 let file = e.target.files[0];
@@ -385,17 +389,25 @@
                 this.$Progress.start()
                 this.form.put('api/profile/')
                 .then( ()=> {
+                    Fire.$emit('AfterCreate')
                     this.$Progress.finish()
                 } )
                 .catch( ()=> {
                     this.$Progress.fail()
                 })
+            },
+            getProfilePhoto() {
+                let photo = ( this.form.photo.length > 100 ) ? this.form.photo : 'img/profile/'+this.form.photo
+                return photo
             }
         },
 
         created() {
-            axios.get('api/profile')
-            .then( ({ data }) => (this.form.fill( data )) )
+            this.loadData()
+
+            Fire.$on('AfterCreate', () => {
+                this.loadData()
+            })
         }
     }
 </script>
