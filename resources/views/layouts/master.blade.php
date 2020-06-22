@@ -205,6 +205,7 @@
               </p>
             </a>
           </li>
+        @can('isAdmin')
           <li class="nav-item">
             <router-link to="/developers" class="nav-link">
               <i class="nav-icon fas fa-user-cog text-orange"></i>
@@ -213,6 +214,7 @@
               </p>
             </router-link>
           </li>
+          @endcan
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">
               <i class="nav-icon fas fa-id-card text-orange"></i>
