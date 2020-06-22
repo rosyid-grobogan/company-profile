@@ -282,7 +282,9 @@
                       <div class="form-group row">
                         <label for="email" class="col-sm-12 col-form-label">Email</label>
                         <div class="col-sm-12">
-                          <input type="email" v-model="form.email" class="form-control" id="email" placeholder="Email">
+                          <input type="email" v-model="form.email" class="form-control" id="email" placeholder="Email"
+                          :class="{ 'is-invalid': form.errors.has('email') }">
+                           <has-error :form="form" field="email"></has-error>
                         </div>
                       </div>
 
@@ -377,6 +379,9 @@
 
             },
             updateInfo() {
+                if(this.form.password == ""){
+                                this.form.password = undefined;
+                            }
                 this.$Progress.start()
                 this.form.put('api/profile/')
                 .then( ()=> {

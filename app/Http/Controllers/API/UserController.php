@@ -121,10 +121,11 @@ class UserController extends Controller
     {
         $user = auth('api')->user();
 
+
         $this->validate($request, [
-            'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users, email'.$user->id,
-            'password' => 'sometimes|required|min:6'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'sometimes|min:5'
         ]);
 
 
@@ -136,6 +137,12 @@ class UserController extends Controller
 
             $request->merge([
                 'photo' => $name
+            ]);
+        }
+
+        if(!empty($request->password) || empty($request->password)){
+            $request->merge([
+                'password' => Hash::make($request['password'])
             ]);
         }
 
