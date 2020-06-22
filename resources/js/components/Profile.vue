@@ -351,22 +351,40 @@
                 //console.log('uploading')
                 let file = e.target.files[0];
 
-                //console.log(file)
-                // File { name: "man-muslim.svg", lastModified: 1591362486000, webkitRelativePath: "", size: 4394, type: "image/svg+xml" }
+                console.log(file['size'])
+                // File { name: "man-muslim.svg", lastModified: 1591362486000, webkitRelativePath: "", size: 4394, type: "image/svg+xml" }2111775
 
-                var reader = new FileReader();
-                reader.onloadend = (file) => {
+                let reader = new FileReader();
+                if (file['size'] < 2111775) {
+                    reader.onloadend = (file) => {
                     // output base64
                     //console.log('RESULT', reader.result)
 
                     this.form.photo = reader.result
+                    }
+                    reader.readAsDataURL(file)
+                } else {
+
+
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You are uploading a large file!',
+                    footer: '<a href>Why do I have this issue?</a>'
+                    })
                 }
-                reader.readAsDataURL(file)
+
+
             },
             updateInfo() {
+                this.$Progress.start()
                 this.form.put('api/profile/')
-                .then( ()=> {} )
-                .catch( ()=> {})
+                .then( ()=> {
+                    this.$Progress.finish()
+                } )
+                .catch( ()=> {
+                    this.$Progress.fail()
+                })
             }
         },
 
