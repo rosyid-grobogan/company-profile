@@ -175,7 +175,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-sitemap text-orange"></i>
               <p>
-                Organizations
+                Managements
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
