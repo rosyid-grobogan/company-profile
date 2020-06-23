@@ -81331,9 +81331,19 @@ var Gate = /*#__PURE__*/function () {
       return this.user.type === 'user';
     }
   }, {
-    key: "isAuthor",
-    value: function isAuthor() {
-      return this.user.type === 'author';
+    key: "isAdminOrAuthor",
+    value: function isAdminOrAuthor() {
+      if (this.user.type === 'admin' || this.user.type === 'author') {
+        return true;
+      }
+    } // for experement
+
+  }, {
+    key: "isUserOrAuthor",
+    value: function isUserOrAuthor() {
+      if (this.user.type === 'user' || this.user.type === 'author') {
+        return true;
+      }
     }
   }]);
 

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center" v-if="$gate.isAdmin()">
+        <div class="row justify-content-center" v-if="$gate.isAdminOrAuthor()">
 
 
           <div class="col-12">
@@ -137,7 +137,7 @@
 
         </div>
 
-        <div v-if="!$gate.isAdmin()">
+        <div v-if="!$gate.isAdminOrAuthor()">
             <not-found></not-found>
         </div>
     </div>
@@ -185,7 +185,7 @@
           },
           loadUsers(){
               //not send if false
-              if(this.$gate.isAdmin()){
+              if(this.$gate.isAdminOrAuthor()){
                 axios.get('api/users')
                 .then( ({ data }) => (this.users = data.data) );
               }
