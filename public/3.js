@@ -149,12 +149,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -199,7 +193,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$gate.isAdminOrAuthor()) {
         axios.get('api/users').then(function (_ref) {
           var data = _ref.data;
-          return _this2.users = data.data;
+          return _this2.users = data;
         });
       }
     },
@@ -253,13 +247,22 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         _this4.$Progress.fail();
       });
+    },
+    // Our method to GET results from a Laravel endpoint
+    getResults: function getResults() {
+      var _this5 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get('api/users?page=' + page).then(function (response) {
+        _this5.users = response.data;
+      });
     }
   },
   mounted: function mounted() {
     console.log('Component mounted.');
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.loadUsers(); //load after 3 second when created
     //setInterval(this.loadUsers(), 3000)
@@ -267,7 +270,7 @@ __webpack_require__.r(__webpack_exports__);
     //setInterval(() => this.loadUsers(), 3000)
 
     Fire.$on('AfterCreate', function () {
-      _this5.loadUsers();
+      _this6.loadUsers();
     });
   }
 });
@@ -322,7 +325,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.users, function(user) {
+                    _vm._l(_vm.users.data, function(user) {
                       return _c("tr", { key: user.id }, [
                         _c("td", [_vm._v(_vm._s(user.id))]),
                         _vm._v(" "),
@@ -370,7 +373,19 @@ var render = function() {
                     0
                   )
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-footer" },
+                [
+                  _c("pagination", {
+                    attrs: { data: _vm.users },
+                    on: { "pagination-change-page": _vm.getResults }
+                  })
+                ],
+                1
+              )
             ])
           ]),
           _vm._v(" "),

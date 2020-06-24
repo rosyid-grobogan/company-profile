@@ -1,8 +1,6 @@
 <template>
     <div class="container">
         <div class="row justify-content-center" v-if="$gate.isAdminOrAuthor()">
-
-
           <div class="col-12">
             <div class="card">
               <div class="card-header">
@@ -12,9 +10,6 @@
                   <button class="btn btn-success" @click="newModel">Add New <i class="fas fa-user-plus"></i></button>
                     </div>
                 </div>
-
-
-
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
@@ -30,14 +25,12 @@
                     </tr>
                   </thead>
                   <tbody>
-
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in users.data" :key="user.id">
                       <td>{{ user.id }}</td>
                       <td>{{ user.name }}</td>
                       <td>{{ user.email }}</td>
                       <td>{{ user.type | upText}}</td>
                       <td>{{ user.created_at| myDate }}</td>
-
                       <td>
                           <a href="#" @click="editModel(user)">
                               <i class="fa fa-edit text-blue"></i>
@@ -48,12 +41,13 @@
                           </a>
                       </td>
                     </tr>
-
-
                   </tbody>
                 </table>
               </div>
               <!-- /.card-body -->
+              <div class="card-footer">
+                  <pagination :data="users" @pagination-change-page="getResults"></pagination>
+              </div>
             </div>
             <!-- /.card -->
           </div>
@@ -163,6 +157,7 @@
                 editmode: false
             }
         },
+
         methods: {
           createUser() {
             this.$Progress.start()
@@ -187,7 +182,7 @@
               //not send if false
               if(this.$gate.isAdminOrAuthor()){
                 axios.get('api/users')
-                .then( ({ data }) => (this.users = data.data) );
+                .then( ({ data }) => (this.users = data) );
               }
 
           },
@@ -254,12 +249,21 @@
             .catch( ()=>{
                 this.$Progress.fail()
             })
-          }
+          },
+            // Our method to GET results from a Laravel endpoint
+            getResults(page = 1) {
+                axios.get('api/users?page=' + page)
+                    .then(response => {
+                        this.users = response.data;
+                    });
+            }
 
         },
+
         mounted() {
             console.log('Component mounted.')
         },
+
         created() {
             this.loadUsers();
             //load after 3 second when created
