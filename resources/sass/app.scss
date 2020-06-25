@@ -17,3 +17,37 @@
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
+
+// Print
+.navbar-laravel {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  }
+  .router-link-exact-active{
+      background-color: #3f51b5;
+      color:#fff !important;
+  }
+
+
+  @media print {
+      .nav.nav-tabs li:not(.active){
+          display: none;
+      }
+      .invoice{
+          padding: 10px 20px;
+      }
+
+      .invoice{
+          background-position: center center;
+          background-repeat: no-repeat;
+
+      }
+      .table-responsive table{
+          background-color: transparent !important;
+      }
+
+  }
+
+  @page {
+      margin: 0;
+  }
