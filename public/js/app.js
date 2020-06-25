@@ -82034,6 +82034,11 @@ var routes = [{
   component: function component() {
     return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./components/Profile.vue */ "./resources/js/components/Profile.vue"));
   }
+}, {
+  path: '*',
+  component: function component() {
+    return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ./components/NotFound.vue */ "./resources/js/components/NotFound.vue"));
+  }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   mode: 'history',

@@ -59,7 +59,8 @@ let routes = [
     { path: '/dashboard', component: () => import('./components/Dashboard.vue') },
     { path: '/users', component: () => import('./components/Users.vue') },
     { path: '/developers', component: () => import('./components/Developers.vue') },
-    { path: '/profile', component: () => import('./components/Profile.vue') }
+    { path: '/profile', component: () => import('./components/Profile.vue') },
+    { path: '*', component: () => import('./components/NotFound.vue') }
   ]
 
   const router = new VueRouter({
