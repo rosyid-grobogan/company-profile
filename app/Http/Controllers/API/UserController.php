@@ -160,4 +160,20 @@ class UserController extends Controller
         return ['message' => 'Success'];
         // data:image/png;base64,iVBORw0KGgo ..
     }
+
+    public function search(Request $request)
+    {
+        if(!empty($request->q)) {
+            $users = User::where( function($query) use ($request) {
+                $query->where('name', 'LIKE', '%'.$request->q.'%')
+                        ->orWhere('email', 'LIKE', '%'.$request->q.'%')
+                        ->orWhere('type', 'LIKE', '%'.$request->q.'%');
+            })->paginate();
+
+        }else {
+            $users = User::latest()->paginate(1);
+        }
+       return $users;
+    }
+    
 }

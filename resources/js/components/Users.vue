@@ -275,6 +275,15 @@
             Fire.$on('AfterCreate', () => {
               this.loadUsers()
             })
+            Fire.$on('searching', ()=>{
+                let query = this.$parent.search
+                if(this.$gate.isAdminOrAuthor){
+                    axios.get('api/findUser?q=' + query)
+                    .then( ({ data }) => (this.users = data) )
+                    .catch( () => {})
+                }
+            })
+
         }
     }
 </script>

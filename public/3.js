@@ -272,6 +272,16 @@ __webpack_require__.r(__webpack_exports__);
     Fire.$on('AfterCreate', function () {
       _this6.loadUsers();
     });
+    Fire.$on('searching', function () {
+      var query = _this6.$parent.search;
+
+      if (_this6.$gate.isAdminOrAuthor) {
+        axios.get('api/findUser?q=' + query).then(function (_ref2) {
+          var data = _ref2.data;
+          return _this6.users = data;
+        })["catch"](function () {});
+      }
+    });
   }
 });
 
